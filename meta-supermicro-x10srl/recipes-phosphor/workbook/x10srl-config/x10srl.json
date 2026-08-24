@@ -1,0 +1,13 @@
+{
+    "board": {
+        "name": "X10SRL-F",
+        "manufacturer": "Supermicro",
+        "type": "Server"
+    },
+    "bmc": {
+        "type": "AST2400"
+    },
+    "sensors": {},
+    "leds": {},
+    "gpio": {}
+}
