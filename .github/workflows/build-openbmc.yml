@@ -46,11 +46,19 @@ jobs:
       run: |
         cp -r meta-supermicro-x10srl $HOME/openbmc/
 
+    - name: Debug layer files
+      run: |
+        echo "=== Checking layer structure ==="
+        ls -la $HOME/openbmc/meta-supermicro-x10srl/conf/machine/
+        echo "=== Content of x10srl.conf ==="
+        cat $HOME/openbmc/meta-supermicro-x10srl/conf/machine/x10srl.conf
+
     - name: Setup build environment
       run: |
         cd $HOME/openbmc
-        . setup x10srl
-        echo 'BBLAYERS += "${BSPDIR}/meta-supermicro-x10srl"' >> conf/bblayers.conf
+        export TEMPLATECONF=meta-supermicro-x10srl/conf
+        . openbmc-env
+        MACHINE=x10srl . setup
         CPU_CORES=$(nproc)
         echo "BB_NUMBER_THREADS = \"$CPU_CORES\"" >> conf/local.conf
         echo "PARALLEL_MAKE = \"-j $CPU_CORES\"" >> conf/local.conf
@@ -58,7 +66,7 @@ jobs:
     - name: Build OpenBMC firmware
       run: |
         cd $HOME/openbmc
-        . setup x10srl
+        . openbmc-env
         bitbake obmc-phosphor-image
 
     - name: Prepare artifacts
