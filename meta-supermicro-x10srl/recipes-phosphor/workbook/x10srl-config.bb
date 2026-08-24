@@ -14,11 +14,12 @@ SRC_URI = " \
     file://x10srl.json \
     "
 
-S = "${WORKDIR}"
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${S}"
 
 do_install() {
     install -d ${D}${datadir}/${PN}
-    install -m 0644 ${WORKDIR}/x10srl.json ${D}${datadir}/${PN}/
+    install -m 0644 ${S}/x10srl.json ${D}${datadir}/${PN}/
 }
 
 FILES:${PN} += "${datadir}/${PN}/x10srl.json"
