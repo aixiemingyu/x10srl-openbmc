@@ -1,0 +1,121 @@
+{
+    "sensors": [
+        {
+            "name": "CPU_Temp",
+            "type": "temp",
+            "readPath": "/xyz/openbmc_project/sensors/temperature/CPU_Temp",
+            "writePath": "",
+            "min": 0,
+            "max": 127,
+            "timeout": 0,
+            "ignoreDbusMinMax": false
+        },
+        {
+            "name": "System_Temp",
+            "type": "temp",
+            "readPath": "/xyz/openbmc_project/sensors/temperature/System_Temp",
+            "writePath": "",
+            "min": 0,
+            "max": 127,
+            "timeout": 0,
+            "ignoreDbusMinMax": false
+        },
+        {
+            "name": "Fan1",
+            "type": "fan",
+            "readPath": "/xyz/openbmc_project/sensors/fan_tach/FAN1",
+            "writePath": "/sys/class/hwmon/hwmon0/pwm1",
+            "min": 0,
+            "max": 255,
+            "timeout": 0,
+            "ignoreDbusMinMax": false
+        },
+        {
+            "name": "Fan2",
+            "type": "fan",
+            "readPath": "/xyz/openbmc_project/sensors/fan_tach/FAN2",
+            "writePath": "/sys/class/hwmon/hwmon0/pwm2",
+            "min": 0,
+            "max": 255,
+            "timeout": 0,
+            "ignoreDbusMinMax": false
+        },
+        {
+            "name": "Fan3",
+            "type": "fan",
+            "readPath": "/xyz/openbmc_project/sensors/fan_tach/FAN3",
+            "writePath": "/sys/class/hwmon/hwmon0/pwm3",
+            "min": 0,
+            "max": 255,
+            "timeout": 0,
+            "ignoreDbusMinMax": false
+        },
+        {
+            "name": "Fan4",
+            "type": "fan",
+            "readPath": "/xyz/openbmc_project/sensors/fan_tach/FAN4",
+            "writePath": "/sys/class/hwmon/hwmon0/pwm4",
+            "min": 0,
+            "max": 255,
+            "timeout": 0,
+            "ignoreDbusMinMax": false
+        }
+    ],
+    "zones": [
+        {
+            "id": 0,
+            "minThermalOutput": 30.0,
+            "failsafePercent": 100.0,
+            "pids": [
+                {
+                    "name": "CPU_Fan_Control",
+                    "type": "stepwise",
+                    "inputs": ["CPU_Temp"],
+                    "setpoint": 75.0,
+                    "pid": {
+                        "samplePeriod": 1.0,
+                        "proportionalCoeff": 0.0,
+                        "integralCoeff": 0.0,
+                        "feedFwdOffsetCoeff": 0.0,
+                        "feedFwdGainCoeff": 1.0,
+                        "integralLimit_min": 0.0,
+                        "integralLimit_max": 0.0,
+                        "outLim_min": 30.0,
+                        "outLim_max": 100.0,
+                        "slewNeg": 0.0,
+                        "slewPos": 0.0
+                    },
+                    "stepwiseInfo": {
+                        "ts": 65.0,
+                        "reading": [30.0, 40.0, 50.0, 60.0, 70.0, 75.0, 80.0, 85.0],
+                        "output": [30.0, 35.0, 45.0, 55.0, 70.0, 85.0, 95.0, 100.0]
+                    }
+                },
+                {
+                    "name": "System_Fan_Control",
+                    "type": "stepwise",
+                    "inputs": ["System_Temp"],
+                    "setpoint": 70.0,
+                    "pid": {
+                        "samplePeriod": 1.0,
+                        "proportionalCoeff": 0.0,
+                        "integralCoeff": 0.0,
+                        "feedFwdOffsetCoeff": 0.0,
+                        "feedFwdGainCoeff": 1.0,
+                        "integralLimit_min": 0.0,
+                        "integralLimit_max": 0.0,
+                        "outLim_min": 30.0,
+                        "outLim_max": 100.0,
+                        "slewNeg": 0.0,
+                        "slewPos": 0.0
+                    },
+                    "stepwiseInfo": {
+                        "ts": 60.0,
+                        "reading": [25.0, 35.0, 45.0, 55.0, 65.0, 70.0, 75.0, 80.0],
+                        "output": [30.0, 35.0, 40.0, 50.0, 65.0, 80.0, 90.0, 100.0]
+                    }
+                }
+            ]
+        }
+    ]
+}

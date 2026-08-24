@@ -1,0 +1,10 @@
+{
+    "fruConfigs": [
+        {
+            "bus": 0,
+            "address": 80,
+            "type": "EEPROM",
+            "name": "Baseboard FRU"
+        }
+    ]
+}

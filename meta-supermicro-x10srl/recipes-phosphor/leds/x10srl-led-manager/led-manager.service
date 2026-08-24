@@ -1,0 +1,12 @@
+[Unit]
+Description=X10SRL LED Manager
+After=mapper-wait@-xyz-openbmc_project-led.service
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/led-manager.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

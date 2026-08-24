@@ -1,0 +1,47 @@
+{
+    "IdleHardResetMicroseconds": 5000000,
+    "PowerPulseTimeMilliseconds": 200,
+    "ForceOffPulseTimeMilliseconds": 5000,
+    "ResetPulseTimeMilliseconds": 500,
+    "PowerCycleTimeMilliseconds": 5000,
+    "SioPowerGoodWatchdogTimeMilliseconds": 5000,
+    "PsPowerOKWatchdogTimeMilliseconds": 3000,
+    "gracefulPowerOffTimeSeconds": 60,
+    "warmResetCheckTimeMilliseconds": 500,
+    "PowerOnMinimumTimeMilliseconds": 1000,
+    "powerOnDelayMilliseconds": 0,
+    "powerOffDelayMilliseconds": 0,
+    "PowerRestorePolicyPolicy": "xyz.openbmc_project.Control.Power.RestorePolicy.Policy.AlwaysOff",
+    "GpioConfigs": [
+        {
+            "Name": "PowerButton",
+            "LineName": "POWER_BUTTON",
+            "Type": "gpio",
+            "Polarity": "ActiveLow"
+        },
+        {
+            "Name": "PowerOk",
+            "LineName": "PS_PWROK",
+            "Type": "gpio",
+            "Polarity": "ActiveHigh"
+        },
+        {
+            "Name": "PowerOut",
+            "LineName": "POWER_OUT",
+            "Type": "gpio",
+            "Polarity": "ActiveLow"
+        },
+        {
+            "Name": "ResetButton",
+            "LineName": "RESET_BUTTON",
+            "Type": "gpio",
+            "Polarity": "ActiveLow"
+        },
+        {
+            "Name": "ResetOut",
+            "LineName": "RESET_OUT",
+            "Type": "gpio",
+            "Polarity": "ActiveLow"
+        }
+    ]
+}

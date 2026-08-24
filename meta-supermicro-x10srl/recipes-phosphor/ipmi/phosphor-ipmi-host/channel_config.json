@@ -1,0 +1,58 @@
+{
+    "channels": [
+        {
+            "number": 1,
+            "name": "eth0",
+            "is_valid": true,
+            "active_sessions": 0,
+            "channel_info": {
+                "medium_type": "lan-802.3",
+                "protocol_type": "ipmb-1.0",
+                "session_supported": "multi-session",
+                "is_ipmi": true
+            },
+            "access": {
+                "privilege_limit": "administrator",
+                "alerting_disabled": false,
+                "per_msg_auth_disabled": false,
+                "user_level_auth_disabled": false
+            }
+        },
+        {
+            "number": 2,
+            "name": "eth1",
+            "is_valid": true,
+            "active_sessions": 0,
+            "channel_info": {
+                "medium_type": "lan-802.3",
+                "protocol_type": "ipmb-1.0",
+                "session_supported": "multi-session",
+                "is_ipmi": true
+            },
+            "access": {
+                "privilege_limit": "administrator",
+                "alerting_disabled": false,
+                "per_msg_auth_disabled": false,
+                "user_level_auth_disabled": false
+            }
+        },
+        {
+            "number": 3,
+            "name": "KCS3",
+            "is_valid": true,
+            "active_sessions": 0,
+            "channel_info": {
+                "medium_type": "system-interface",
+                "protocol_type": "kcs",
+                "session_supported": "session-less",
+                "is_ipmi": true
+            },
+            "access": {
+                "privilege_limit": "administrator",
+                "alerting_disabled": false,
+                "per_msg_auth_disabled": false,
+                "user_level_auth_disabled": false
+            }
+        }
+    ]
+}
