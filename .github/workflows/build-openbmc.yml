@@ -52,6 +52,10 @@ jobs:
         ls -la $HOME/openbmc/meta-supermicro-x10srl/conf/machine/
         echo "=== Content of x10srl.conf ==="
         cat $HOME/openbmc/meta-supermicro-x10srl/conf/machine/x10srl.conf
+        echo "=== Finding aspeed include files ==="
+        find $HOME/openbmc -name "*aspeed*.inc" -type f 2>/dev/null | head -20
+        echo "=== Checking existing machine configs ==="
+        find $HOME/openbmc -path "*/conf/machine/*.conf" -type f 2>/dev/null | head -10
 
     - name: Setup build environment
       run: |
