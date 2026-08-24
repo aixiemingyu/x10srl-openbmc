@@ -40,40 +40,34 @@ jobs:
 
     - name: Clone OpenBMC
       run: |
-        git clone --depth 1 https://github.com/openbmc/openbmc.git ~/openbmc
+        git clone --depth 1 https://github.com/openbmc/openbmc.git $HOME/openbmc
 
     - name: Copy X10SRL layer
       run: |
-        cp -r meta-supermicro-x10srl ~/openbmc/
+        cp -r meta-supermicro-x10srl $HOME/openbmc/
 
     - name: Setup build environment
-      working-directory: ~/openbmc
       run: |
+        cd $HOME/openbmc
         . setup x10srl
         echo 'BBLAYERS += "${BSPDIR}/meta-supermicro-x10srl"' >> conf/bblayers.conf
         CPU_CORES=$(nproc)
         echo "BB_NUMBER_THREADS = \"$CPU_CORES\"" >> conf/local.conf
         echo "PARALLEL_MAKE = \"-j $CPU_CORES\"" >> conf/local.conf
-        echo 'SSTATE_MIRRORS = "file://.* http://sstate.yoctoproject.org/all/PATH;downloadfilename=PATH"' >> conf/local.conf
 
     - name: Build OpenBMC firmware
-      working-directory: ~/openbmc
       run: |
+        cd $HOME/openbmc
         . setup x10srl
         bitbake obmc-phosphor-image
 
     - name: Prepare artifacts
       run: |
         mkdir -p artifacts
-        cp ~/openbmc/build/tmp/deploy/images/x10srl/obmc-phosphor-image-x10srl.static.mtd \
+        cp $HOME/openbmc/build/tmp/deploy/images/x10srl/obmc-phosphor-image-x10srl.static.mtd \
            artifacts/x10srl-openbmc-$(date +%Y%m%d-%H%M%S).mtd
         cd artifacts
         sha256sum *.mtd > SHA256SUMS.txt
-        cat > VERSION.txt << EOF
-        X10SRL OpenBMC Firmware
-        Build Date: $(date)
-        Git Commit: ${{ github.sha }}
-        EOF
 
     - name: Upload firmware
       uses: actions/upload-artifact@v4
