@@ -56,9 +56,8 @@ jobs:
     - name: Setup build environment
       run: |
         cd $HOME/openbmc
-        export TEMPLATECONF=meta-supermicro-x10srl/conf
+        export TEMPLATECONF=meta-supermicro-x10srl/conf/templates/default
         . openbmc-env
-        MACHINE=x10srl . setup
         CPU_CORES=$(nproc)
         echo "BB_NUMBER_THREADS = \"$CPU_CORES\"" >> conf/local.conf
         echo "PARALLEL_MAKE = \"-j $CPU_CORES\"" >> conf/local.conf
