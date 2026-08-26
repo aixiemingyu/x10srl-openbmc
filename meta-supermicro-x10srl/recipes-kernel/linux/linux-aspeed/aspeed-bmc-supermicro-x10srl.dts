@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0+
+// Copyright (c) 2026 OpenBMC Community
 /dts-v1/;
 
 #include "aspeed-g4.dtsi"
@@ -14,7 +15,9 @@
     };
 
     memory@40000000 {
-        reg = <0x40000000 0x20000000>; // 512MB
+        // TODO: Verify actual size from vendor U-Boot output
+        // Conservative 128MB until confirmed
+        reg = <0x40000000 0x08000000>;
     };
 
     reserved-memory {
@@ -22,43 +25,14 @@
         #size-cells = <1>;
         ranges;
 
-        vga_memory: framebuffer@5f000000 {
+        vga_memory: framebuffer@47800000 {
             no-map;
-            reg = <0x5f000000 0x01000000>; // 16MB
+            reg = <0x47800000 0x00800000>; // 8MB for VGA
         };
-
-        flash_memory: region@5ee00000 {
-            no-map;
-            reg = <0x5ee00000 0x00200000>; // 2MB for FW
-        };
-    };
-
-    leds {
-        compatible = "gpio-leds";
-
-        led-identify {
-            label = "identify";
-            gpios = <&gpio ASPEED_GPIO(A, 0) GPIO_ACTIVE_LOW>;
-        };
-
-        led-status {
-            label = "status";
-            gpios = <&gpio ASPEED_GPIO(A, 1) GPIO_ACTIVE_LOW>;
-        };
-    };
-
-    iio-hwmon {
-        compatible = "iio-hwmon";
-        io-channels = <&adc 0>, <&adc 1>, <&adc 2>, <&adc 3>,
-                      <&adc 4>, <&adc 5>, <&adc 6>, <&adc 7>;
-    };
-
-    iio-hwmon-battery {
-        compatible = "iio-hwmon";
-        io-channels = <&adc 8>;
     };
 };
 
+// SPI Flash - 32MB confirmed from product specs
 &fmc {
     status = "okay";
     flash@0 {
@@ -70,6 +44,7 @@
     };
 };
 
+// Host BIOS Flash
 &spi {
     status = "okay";
     pinctrl-names = "default";
@@ -83,10 +58,12 @@
     };
 };
 
+// Console UART
 &uart5 {
     status = "okay";
 };
 
+// Network - TODO: Verify RMII vs RGMII from U-Boot output
 &mac0 {
     status = "okay";
     use-ncsi;
@@ -100,161 +77,7 @@
     pinctrl-0 = <&pinctrl_rgmii2_default>;
 };
 
-&i2c0 {
-    status = "okay";
-    // FRU EEPROM
-    eeprom@50 {
-        compatible = "atmel,24c256";
-        reg = <0x50>;
-        pagesize = <64>;
-    };
-};
-
-&i2c1 {
-    status = "okay";
-    // System management bus
-};
-
-&i2c2 {
-    status = "okay";
-    // PCIe slot I2C
-};
-
-&i2c3 {
-    status = "okay";
-    // Reserved
-};
-
-&i2c4 {
-    status = "okay";
-    // Reserved
-};
-
-&i2c5 {
-    status = "okay";
-    // Reserved
-};
-
-&i2c6 {
-    status = "okay";
-    // VR/Voltage regulators
-};
-
-&i2c7 {
-    status = "okay";
-    // Thermal sensors
-    lm75@48 {
-        compatible = "national,lm75";
-        reg = <0x48>;
-    };
-
-    lm75@49 {
-        compatible = "national,lm75";
-        reg = <0x49>;
-    };
-};
-
-&i2c8 {
-    status = "okay";
-    // Reserved
-};
-
-&i2c9 {
-    status = "okay";
-    // Reserved
-};
-
-&i2c10 {
-    status = "okay";
-    // Reserved
-};
-
-&i2c11 {
-    status = "okay";
-    // Reserved
-};
-
-&i2c12 {
-    status = "okay";
-    // Reserved
-};
-
-&i2c13 {
-    status = "okay";
-    // Reserved
-};
-
-&gpio {
-    status = "okay";
-    gpio-line-names =
-    /*A0-A7*/   "LED_IDENTIFY","LED_STATUS","","","","","","",
-    /*B0-B7*/   "","","","","","","","",
-    /*C0-C7*/   "","","","","","","","",
-    /*D0-D7*/   "","","","","","","","",
-    /*E0-E7*/   "","","","","","","","",
-    /*F0-F7*/   "","","","","","","","",
-    /*G0-G7*/   "","","","","","","","",
-    /*H0-H7*/   "","","","","","","","",
-    /*I0-I7*/   "","","","","","","","",
-    /*J0-J7*/   "","","","","","","","",
-    /*K0-K7*/   "","","","","","","","",
-    /*L0-L7*/   "","","","","","","","",
-    /*M0-M7*/   "","","","","","","","",
-    /*N0-N7*/   "","","","","","","","",
-    /*O0-O7*/   "","","","","","","","",
-    /*P0-P7*/   "","","","","","","","",
-    /*Q0-Q7*/   "","","","","","","","",
-    /*R0-R7*/   "","","","","","","","",
-    /*S0-S7*/   "","","","","","","","",
-    /*T0-T7*/   "","","","","","","","",
-    /*U0-U7*/   "","","","","","","","",
-    /*V0-V7*/   "","","","","","","","",
-    /*W0-W7*/   "","","","","","","","",
-    /*X0-X7*/   "","","","","","","","",
-    /*Y0-Y7*/   "","","","","","","","",
-    /*Z0-Z7*/   "","","","","","","","",
-    /*AA0-AA7*/ "","","","","","","","",
-    /*AB0-AB7*/ "","","","","","","","";
-};
-
-&adc {
-    status = "okay";
-};
-
-&pwm_tacho {
-    status = "okay";
-    pinctrl-names = "default";
-    pinctrl-0 = <&pinctrl_pwm0_default &pinctrl_pwm1_default
-                 &pinctrl_pwm2_default &pinctrl_pwm3_default
-                 &pinctrl_pwm4_default &pinctrl_pwm5_default
-                 &pinctrl_pwm6_default &pinctrl_pwm7_default>;
-
-    fan@0 {
-        reg = <0x00>;
-        aspeed,fan-tach-ch = /bits/ 8 <0x00>;
-    };
-
-    fan@1 {
-        reg = <0x01>;
-        aspeed,fan-tach-ch = /bits/ 8 <0x01>;
-    };
-
-    fan@2 {
-        reg = <0x02>;
-        aspeed,fan-tach-ch = /bits/ 8 <0x02>;
-    };
-
-    fan@3 {
-        reg = <0x03>;
-        aspeed,fan-tach-ch = /bits/ 8 <0x03>;
-    };
-
-    fan@4 {
-        reg = <0x04>;
-        aspeed,fan-tach-ch = /bits/ 8 <0x04>;
-    };
-};
-
+// KCS Interface - 0xca2 confirmed from Supermicro convention
 &kcs3 {
     status = "okay";
     aspeed,lpc-io-reg = <0xca2>;
@@ -267,4 +90,78 @@
 &lpc_snoop {
     status = "okay";
     snoop-ports = <0x80>;
+};
+
+// I2C buses - ALL DISABLED until specific devices are identified
+// DO NOT enable buses without knowing what's connected
+&i2c0 {
+    status = "disabled";
+};
+
+&i2c1 {
+    status = "disabled";
+};
+
+&i2c2 {
+    status = "disabled";
+};
+
+&i2c3 {
+    status = "disabled";
+};
+
+&i2c4 {
+    status = "disabled";
+};
+
+&i2c5 {
+    status = "disabled";
+};
+
+&i2c6 {
+    status = "disabled";
+};
+
+&i2c7 {
+    status = "disabled";
+};
+
+&i2c8 {
+    status = "disabled";
+};
+
+&i2c9 {
+    status = "disabled";
+};
+
+&i2c10 {
+    status = "disabled";
+};
+
+&i2c11 {
+    status = "disabled";
+};
+
+&i2c12 {
+    status = "disabled";
+};
+
+&i2c13 {
+    status = "disabled";
+};
+
+// GPIO - NO NAMES until verified from actual hardware
+// DO NOT set line names or configure as outputs
+&gpio {
+    status = "okay";
+};
+
+// ADC - disabled until sensor mapping is known
+&adc {
+    status = "disabled";
+};
+
+// PWM/FAN - disabled until channel mapping is verified
+&pwm_tacho {
+    status = "disabled";
 };
