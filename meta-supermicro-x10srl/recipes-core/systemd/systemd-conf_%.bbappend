@@ -12,8 +12,8 @@ FILES:${PN} += " \
 
 do_install:append() {
     install -d ${D}${sysconfdir}/systemd/network
-    install -m 0644 ${WORKDIR}/00-bmc-eth0.network \
+    install -m 0644 ${UNPACKDIR}/00-bmc-eth0.network \
         ${D}${sysconfdir}/systemd/network/
-    install -m 0644 ${WORKDIR}/00-bmc-eth1.network \
+    install -m 0644 ${UNPACKDIR}/00-bmc-eth1.network \
         ${D}${sysconfdir}/systemd/network/
 }

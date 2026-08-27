@@ -40,7 +40,36 @@
         m25p,fast-read;
         label = "bmc";
         spi-max-frequency = <50000000>;
-#include "openbmc-flash-layout.dtsi"
+        partitions {
+            compatible = "fixed-partitions";
+            #address-cells = <1>;
+            #size-cells = <1>;
+
+            u-boot@0 {
+                reg = <0x0 0x60000>;
+                label = "u-boot";
+            };
+
+            u-boot-env@60000 {
+                reg = <0x60000 0x20000>;
+                label = "u-boot-env";
+            };
+
+            kernel@80000 {
+                reg = <0x80000 0x480000>;
+                label = "kernel";
+            };
+
+            rofs@500000 {
+                reg = <0x500000 0x1700000>;
+                label = "rofs";
+            };
+
+            rwfs@1c00000 {
+                reg = <0x1c00000 0x400000>;
+                label = "rwfs";
+            };
+        };
     };
 };
 
@@ -77,10 +106,17 @@
     pinctrl-0 = <&pinctrl_rgmii2_default>;
 };
 
-// KCS Interface - 0xca2 confirmed from Supermicro convention
-&kcs3 {
-    status = "okay";
-    aspeed,lpc-io-reg = <0xca2>;
+// AST2400 SoC dtsi has no kcs1-kcs4 labels (those exist on g5/g6).
+// Add KCS3 under LPC so host IPMI can use SuperMicro's 0xca2 mapping.
+&lpc {
+    kcs3: kcs@2c {
+        compatible = "aspeed,ast2400-kcs-bmc-v2";
+        reg = <0x2c 0x1>, <0x38 0x1>, <0x44 0x1>;
+        interrupts = <8>;
+        clocks = <&syscon ASPEED_CLK_GATE_LCLK>;
+        aspeed,lpc-io-reg = <0xca2>;
+        status = "okay";
+    };
 };
 
 &lpc_ctrl {

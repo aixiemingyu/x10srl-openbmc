@@ -6,6 +6,6 @@ FILES:${PN} += "${datadir}/x86-power-control/power-config.json"
 
 do_install:append() {
     install -d ${D}${datadir}/x86-power-control
-    install -m 0644 ${WORKDIR}/power-config.json \
+    install -m 0644 ${UNPACKDIR}/power-config.json \
         ${D}${datadir}/x86-power-control/power-config.json
 }
